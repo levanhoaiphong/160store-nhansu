@@ -3,12 +3,12 @@ const bcryptjs = require('bcryptjs');
 const { generateToken } = require("../helper/jwt_helper");
 
 
-const signInUser = (req, res) => {
+const signInUser = async (req, res) => {
     try {
         const u = req.body.username;
         const p = req.body.password;
         let sql = 'SELECT * FROM User where username = ?';
-        data.query(sql, [u], function (err, rows) {
+        await data.query(sql, [u], function (err, rows) {
             const user = rows[0];
             const pass_fromdb = user.password;
             const kq = bcryptjs.compareSync(p, pass_fromdb);
@@ -48,7 +48,7 @@ const signUpUser = async (req, res) => {
         const hashPassword = bcryptjs.hashSync(p, salt);
         let info_user = { username: u, password: hashPassword, role: r };
         let sql = 'INSERT INTO `User` SET ?';
-        const results = data.query(sql, info_user, function (err, results) {
+        const results = await data.query(sql, info_user, function (err, results) {
             if (err) throw err;
         });
         res.status(200).send({
