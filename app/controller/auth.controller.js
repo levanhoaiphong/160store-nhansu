@@ -3,22 +3,22 @@ const bcryptjs = require('bcryptjs');
 const { generateToken } = require("../helper/jwt_helper");
 
 
-const signInUser = async (req, res) => {
+let signInUser = async (req, res) => {
     try {
-        const u = req.body.username;
-        const p = req.body.password;
+        let u = req.body.username;
+        let p = req.body.password;
         let sql = 'SELECT * FROM User where username = ?';
         await data.query(sql, [u], function (err, rows) {
-            const user = rows[0];
-            const pass_fromdb = user.password;
-            const kq = bcryptjs.compareSync(p, pass_fromdb);
-            const payload = {
+            let user = rows[0];
+            let pass_fromdb = user.password;
+            let kq = bcryptjs.compareSync(p, pass_fromdb);
+            let payload = {
                 id: user.id,
                 username: user.username,
                 role: user.role
             };
             if (kq) {
-                const accessToken = generateToken(payload)
+                let accessToken = generateToken(payload)
                 res.status(200).send({
                     message: "Login Success",
                     payload,
@@ -39,16 +39,16 @@ const signInUser = async (req, res) => {
     }
 }
 
-const signUpUser = async (req, res) => {
+let signUpUser = async (req, res) => {
     try {
-        const u = req.body.username;
-        const p = req.body.password;
-        const r = req.body.role;
-        const salt = bcryptjs.genSaltSync(10);
-        const hashPassword = bcryptjs.hashSync(p, salt);
+        let u = req.body.username;
+        let p = req.body.password;
+        let r = req.body.role;
+        let salt = bcryptjs.genSaltSync(10);
+        let hashPassword = bcryptjs.hashSync(p, salt);
         let info_user = { username: u, password: hashPassword, role: r };
         let sql = 'INSERT INTO `User` SET ?';
-        const results = await data.query(sql, info_user, function (err, results) {
+        let results = await data.query(sql, info_user, function (err, results) {
             if (err) throw err;
         });
         res.status(200).send({
