@@ -14,10 +14,10 @@ data.connect(function (err) {
     console.log('Connected!!!')
 })
 
-// const hostname = process.env.HOST || 'localhost'
-// const port = process.env.PORT || 3000
-const hostname = 'localhost'
-const port = 3000
+const hostname = process.env.HOST || 'localhost'
+const port = process.env.PORT || 3000
+// const hostname = 'localhost'
+// const port = 3000
 app.use('/api', rootRouter)
 
 app.listen(port, hostname, () => {
