@@ -1,4 +1,3 @@
-const { now } = require("moment/moment");
 const { data } = require("../config/dataconfig");
 const bcryptjs = require('bcryptjs');
 const { generateToken } = require("../helper/jwt_helper");
@@ -6,20 +5,18 @@ const { generateToken } = require("../helper/jwt_helper");
 
 const signInUser = (req, res) => {
     try {
-        const u = req.body.username
-        const p = req.body.password
+        const u = req.body.username;
+        const p = req.body.password;
         let sql = 'SELECT * FROM User where username = ?'
         data.query(sql, [u], function (err, rows) {
-            const user = rows[0]
-            console.log(user)
-            const pass_fromdb = user.password
-            const kq = bcryptjs.compareSync(p, pass_fromdb)
-            console.log(kq)
+            const user = rows[0];
+            const pass_fromdb = user.password;
+            const kq = bcryptjs.compareSync(p, pass_fromdb);
             const payload = {
                 id: user.id,
                 username: user.username,
                 role: user.role
-            }
+            };
             if (kq) {
                 const accessToken = generateToken(payload)
                 res.status(200).send({
@@ -28,15 +25,15 @@ const signInUser = (req, res) => {
                     accessToken,
                     status_code: 200,
                     success: true
-                })
+                });
             } else {
                 res.status(403).send({
                     message: "Password Incorrect",
                     status_code: 403,
                     success: false
-                })
+                });
             }
-        })
+        });
     } catch (error) {
         res.status(500).send(error)
     }
