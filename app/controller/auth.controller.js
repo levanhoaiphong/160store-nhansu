@@ -7,7 +7,7 @@ const signInUser = (req, res) => {
     try {
         const u = req.body.username;
         const p = req.body.password;
-        let sql = 'SELECT * FROM User where username = ?'
+        let sql = 'SELECT * FROM User where username = ?';
         data.query(sql, [u], function (err, rows) {
             const user = rows[0];
             const pass_fromdb = user.password;
